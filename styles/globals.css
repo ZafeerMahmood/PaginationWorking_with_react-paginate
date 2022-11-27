@@ -32,8 +32,8 @@
 
 @layer components{
 
-   pagination{
-      @apply flex justify-center items-center
+   .pagination{
+      @apply  block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-neutral-500 hover:bg-gray-100 hover:text-gray-700 justify-center
    }
 
 }

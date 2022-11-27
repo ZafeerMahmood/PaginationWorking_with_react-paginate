@@ -17,9 +17,16 @@ export default function IndexPage({
   const [itemOffset, setItemOffset] = React.useState(0);
   const [itemsPerPage, setItemsPerPage] = React.useState(5);
 
+
   const endOffset = itemOffset + itemsPerPage;
-  const currentItems = posts.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(posts.length / itemsPerPage);
+  const [currentItems,setCurrentItems] = React.useState(posts.slice(itemOffset, endOffset));
+  const [pageCount,setPageCount] = React.useState(Math.ceil(posts.length / itemsPerPage));
+
+
+  React.useEffect(() => {
+    setCurrentItems(postList.slice(itemOffset, endOffset))
+    setPageCount(Math.ceil(postList.length / itemsPerPage))
+  }, [endOffset, itemOffset, itemsPerPage, postList]);
 
   const handlePageClick = (e: any) => {
     const newOffset = (e.selected * itemsPerPage) % posts.length;
@@ -49,34 +56,28 @@ export default function IndexPage({
 
   return (
     <main className=" flex flex-col m-auto p-8 max-w-[820px]">
-      <h1 className=" items-center uppercase mb-[1rem] text-3xl m-auto text-white">
+      <h1 className=" items-center uppercase mb-[1rem] text-3xl m-auto text-white bg-">
         Home
       </h1>
       <AddPost savePost={addPost} />
 
       <Items postList={currentItems} deletePost={deletePost} />
-      <div className="m-auto">
-        <nav aria-label="">
-          <ul className="">
-            <li className=" ">
+      <div className="m-auto">  
               <ReactPaginate
-                activeClassName={'block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-sky-700 hover:bg-gray-100 hover:text-gray-700 '}
-                breakClassName={'px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'}
-                containerClassName={'inline-flex items-center -space-x-px'}
-                disabledClassName={'px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'}
-                nextClassName={'px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'}
-                pageClassName={' px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'}
-                previousClassName={"px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
+                activeClassName={'pagination font-bold text-sky-700  block px-4 py-2 ml-0'}
+                breakClassName={'pagination'}
+                containerClassName={'flex flex-row'}
+                disabledClassName={'pagination'}
+                nextClassName={'pagination rounded-r-lg font-bold'}
+                pageClassName={' pagination'}
+                previousClassName={"pagination rounded-l-lg font-bold"}
                 breakLabel="..."
-                nextLabel=">"
+                nextLabel="next"
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={5}
                 pageCount={pageCount}
-                previousLabel="<"
+                previousLabel="pervious"
               />
-            </li>
-          </ul>
-        </nav>
       </div>
     </main>
   );
